@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import axios from "axios";
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -22,6 +24,7 @@ function App() {
         axios.get("api/users/me", {auth: {username, password}})
             .then(response => response.data)
             .then(setMe)
+            .catch(() => toast("Falsch"))
     }
 
     const logout = () => {
@@ -35,6 +38,7 @@ function App() {
             <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
             <input type={"text"} value={password} onChange={ev => setPassword(ev.target.value)}/>
             <button onClick={login}>Login!</button>
+            <ToastContainer/>
         </>
     }
 
