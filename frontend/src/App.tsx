@@ -5,6 +5,8 @@ import axios from "axios";
 function App() {
 
     const [me, setMe] = useState<string>();
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     useEffect(() => {
         axios.get("api/users/me")
@@ -14,6 +16,20 @@ function App() {
 
     if (!me) {
         return <>Loading...</>;
+    }
+
+    const login = () => {
+        axios.get("api/users/me", {auth: {username, password}})
+            .then(response => response.data)
+            .then(setMe)
+    }
+
+    if (me === 'anonymousUser') {
+        return <>
+            <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
+            <input type={"text"} value={password} onChange={ev => setPassword(ev.target.value)}/>
+            <button onClick={login}>Login!</button>
+        </>
     }
 
     return <>
