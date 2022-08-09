@@ -8,10 +8,9 @@
         <version>2.7.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>cgn-java-22-2-basic-auth</artifactId>
+    <groupId>de.neuefische.cgnjava222basicauth</groupId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cgn-java-22-2-basic-auth</name>
     <description>cgn-java-22-2-basic-auth</description>
     <properties>
         <java.version>18</java.version>
