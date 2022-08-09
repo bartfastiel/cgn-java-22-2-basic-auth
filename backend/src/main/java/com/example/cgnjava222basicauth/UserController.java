@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping(path = "api/users")
 class UserController {
@@ -12,5 +14,10 @@ class UserController {
     @GetMapping("me")
     String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @GetMapping("logout")
+    void logout(HttpSession httpSession) {
+        httpSession.invalidate();
     }
 }

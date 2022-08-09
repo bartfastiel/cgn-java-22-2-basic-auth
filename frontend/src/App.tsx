@@ -24,6 +24,12 @@ function App() {
             .then(setMe)
     }
 
+    const logout = () => {
+        axios.get("api/users/logout")
+            .then(response => response.data)
+            .then(() => setMe('anonymousUser'))
+    }
+
     if (me === 'anonymousUser') {
         return <>
             <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
@@ -34,6 +40,7 @@ function App() {
 
     return <>
         hi {me}
+        <button onClick={logout}>Logout!</button>
     </>
 }
 
