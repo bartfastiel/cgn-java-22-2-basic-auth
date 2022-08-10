@@ -10,10 +10,26 @@ function App() {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    useEffect(() => {
+    function fetchMe() {
         axios.get("api/users/me")
             .then(response => response.data)
             .then(setMe)
+    }
+
+    function fetchHello() {
+        axios.get("api/hello")
+    }
+
+    useEffect(() => {
+        fetchMe();
+        axios.interceptors.response.use(response => response, error => {
+            const status = error.response ? error.response.status : null
+            if (status === 401 && !error.config.auth) {
+                toast("Sitzung abgelaufen")
+                fetchMe()
+            }
+            return Promise.reject(error);
+        })
     }, [])
 
     if (!me) {
@@ -33,18 +49,19 @@ function App() {
             .then(() => setMe('anonymousUser'))
     }
 
-    if (me === 'anonymousUser') {
-        return <>
-            <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
-            <input type={"text"} value={password} onChange={ev => setPassword(ev.target.value)}/>
-            <button onClick={login}>Login!</button>
-            <ToastContainer/>
-        </>
-    }
-
     return <>
-        hi {me}
-        <button onClick={logout}>Logout!</button>
+        {me === 'anonymousUser' ?
+            <>
+                <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
+                <input type={"text"} value={password} onChange={ev => setPassword(ev.target.value)}/>
+                <button onClick={login}>Login!</button>
+            </> : <>
+                hi {me}
+                <button onClick={fetchHello}>Get!</button>
+                <button onClick={logout}>Logout!</button>
+            </>
+        }
+        <ToastContainer/>
     </>
 }
 
