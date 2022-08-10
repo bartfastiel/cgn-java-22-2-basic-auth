@@ -32,10 +32,6 @@ function App() {
         })
     }, [])
 
-    if (!me) {
-        return <>Loading...</>;
-    }
-
     const login = () => {
         axios.get("api/users/me", {auth: {username, password}})
             .then(response => response.data)
@@ -50,16 +46,19 @@ function App() {
     }
 
     return <>
-        {me === 'anonymousUser' ?
-            <>
-                <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
-                <input type={"text"} value={password} onChange={ev => setPassword(ev.target.value)}/>
-                <button onClick={login}>Login!</button>
-            </> : <>
-                hi {me}
-                <button onClick={fetchHello}>Get!</button>
-                <button onClick={logout}>Logout!</button>
-            </>
+        {
+            me ? (
+                me === 'anonymousUser' ?
+                    <>
+                        <input type={"text"} value={username} onChange={ev => setUsername(ev.target.value)}/>
+                        <input type={"text"} value={password} onChange={ev => setPassword(ev.target.value)}/>
+                        <button onClick={login}>Login!</button>
+                    </> : <>
+                        hi {me}
+                        <button onClick={fetchHello}>Get!</button>
+                        <button onClick={logout}>Logout!</button>
+                    </>
+            ) : "Loading..."
         }
         <ToastContainer/>
     </>
